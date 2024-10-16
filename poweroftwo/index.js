@@ -20,3 +20,4 @@ function isPowerTwoBitwise(n){
 }
 
 console.log(isPowerTwo(1025))
+

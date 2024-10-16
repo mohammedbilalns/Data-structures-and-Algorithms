@@ -1,5 +1,5 @@
 
-
+// worst case O(n^2)(for sroted arrays) avg case  - o(n log n  )
 function quickSort(arr){
     if(arr.length <2) return arr 
 
@@ -18,4 +18,4 @@ function quickSort(arr){
 }
 
 
-console.log(quickSort([2,1,4,1,3,2,4,2,3]))
+console.log(quickSort([2,1,4,1,3,2,4,2,3])) 

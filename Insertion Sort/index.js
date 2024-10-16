@@ -1,7 +1,7 @@
 // Given an array of integers, sort the array 
 
 
-// O(n^2)
+// O(n^2)T 
 function insertionSort(arr){
 
     for(let i=1;i<arr.length ;i++){
