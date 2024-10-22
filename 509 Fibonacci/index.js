@@ -15,7 +15,8 @@ function generateFibonacci(n){
 // Approach 1 - O(2^n)T
 
 function recursiveFibonacci(n){
-    if(n<2) return n //base case 
+    if(n==0 ) return 0 
+    if(n<=2) return 1 //base case 
       return  recursiveFibonacci(n-1)+recursiveFibonacci(n-2)
 }
 
