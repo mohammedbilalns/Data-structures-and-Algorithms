@@ -7,3 +7,5 @@ function climbingStairCase(numStep){
 
 
 console.log(climbingStairCase(6))
+
+// try iterative way 
