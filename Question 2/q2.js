@@ -18,7 +18,7 @@ function moveNumbersToEnd(nums, target){
     }
     return nums;
 }
-// Method 1 with more efficiency 
+// Method 2  with more efficiency 
 
 function moveNumbersToEnd2(nums, target){
     let left = 0;
