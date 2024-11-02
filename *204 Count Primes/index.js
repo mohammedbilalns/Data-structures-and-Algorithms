@@ -24,4 +24,4 @@ var countPrimes = function(n) {
 };
 
 
-console.log(countPrimes(1))
+console.log(countPrimes(90000))
