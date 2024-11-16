@@ -1,6 +1,13 @@
 
+// Method 1  - convert into string 
+var reverse = function(num){
 
-var reverse  = function(num){
+   return  parseInt(String(num).split('').reverse().join(''))
+
+}
+
+// Method 2 
+var reverse2  = function(num){
 
 let reversedNum = 0 
 

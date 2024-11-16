@@ -1,28 +1,21 @@
 
 
-var divide = function(divident , divisor){
-
-    let answerPositive = true
-    if(divident <0 && divisor>0 || divident>0 && divisor<0 ){
-        answerPositive = false 
+var divide = function(dividend , divisor){
+    let divid = Math.abs(dividend)
+    let divs = Math.abs(divisor)
+    let answer = 0 
+    while(divid>= divs){
+        divid-= divs 
+        answer++ 
     }
-    if(divident<0){
-        divident = -divident
+    
+    if((dividend<0 && divisor>0) ||(dividend>0 && divisor<0)){
+        return -answer
     }
-    if(divisor<0){
-        divisor = - divisor
-    }
-
-    sum = divisor
-    count = 0 
-    for(let i=divisor; sum<=divident;i++){
-        count++
-        sum+= divisor
-    }
-    return answerPositive === true ? count : -count
-
+    
+    return answer 
 
     
 }
 
-console.log(divide(1,1))
+console.log(divide(10,3))
