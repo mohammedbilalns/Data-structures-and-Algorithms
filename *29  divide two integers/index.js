@@ -1,6 +1,9 @@
 
 
 var divide = function(dividend , divisor){
+    let intMax = Math.pow(2,31)-1
+    let intMin = -Math.pow(2,31)
+
     let divid = Math.abs(dividend)
     let divs = Math.abs(divisor)
     let answer = 0 
@@ -10,7 +13,14 @@ var divide = function(dividend , divisor){
     }
     
     if((dividend<0 && divisor>0) ||(dividend>0 && divisor<0)){
-        return -answer
+        answer = -answer
+    }
+    
+    if(answer>intMax){
+        answer = intMax
+    }
+    if(answer< intMin){
+        answer = intMin
     }
     
     return answer 
@@ -18,4 +28,4 @@ var divide = function(dividend , divisor){
     
 }
 
-console.log(divide(10,3))
+console.log(divide(-2147483648,-1))

@@ -1,4 +1,4 @@
-
+// 
 var isPalindrome = function(x){
     
     const stringNum = String(x)
