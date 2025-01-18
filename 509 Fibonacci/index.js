@@ -13,12 +13,13 @@ function generateFibonacci(n){
 // given a number 'n', find the nth element of the fibonacci sequence 
 
 // Approach 1 - O(2^n)T
+function nthFibonacci(n){
+	if(n ==0 ) return 0 
+	if(n ==1) return 1
 
-function recursiveFibonacci(n){
-    if(n==0 ) return 0 
-    if(n<=2) return 1 //base case 
-      return  recursiveFibonacci(n-1)+recursiveFibonacci(n-2)
+	return nthFibonacci(n-1)+ nthFibonacci(n-2)
+
 }
 
-
-console.log(recursiveFibonacci(11))
+console.log(nthFibonacci(11))
+console.log(generateFibonacci(11))

@@ -27,7 +27,7 @@ function binarySearchRecursive(arr, target) {
 function search(arr, target, leftIndex, rightIndex){
     if(leftIndex > rightIndex) return -1
 
-    let middleIndex = math.floor((leftIndex + rightIndex)/2)
+    let middleIndex = Math.floor((leftIndex + rightIndex)/2)
     if(target === arr[middleIndex]) return middleIndex
     if(target < arr[middleIndex]){
        return search(arr, target, leftIndex, middleIndex-1)
