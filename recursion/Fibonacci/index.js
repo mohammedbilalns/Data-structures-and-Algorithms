@@ -21,5 +21,21 @@ function nthFibonacci(n){
 
 }
 
-console.log(nthFibonacci(11))
-console.log(generateFibonacci(11))
+// Approach 2 - 
+
+function nthFibonacciIt(n){
+	if(n ==0 ) return 0 
+	if(n == 1) return 1
+
+	let prev = 0 
+	let curr = 1 
+	
+	for(let i=2;i<=n;i++){
+		let temp = curr 
+		curr = prev + curr 
+		prev = temp 
+	}
+	return curr 
+}
+
+console.log(nthFibonacciIt(11))
