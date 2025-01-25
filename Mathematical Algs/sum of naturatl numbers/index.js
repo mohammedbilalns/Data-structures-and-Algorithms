@@ -1,6 +1,6 @@
 // Given an integer n find the sum of first n natural numbers 
 
-// iterative 
+// iterative  $O(n)$
 function sumNatural(n){
 
 	let sum = 0 
@@ -10,13 +10,13 @@ function sumNatural(n){
 	return sum 
 }
 
-// using formula 
+// using formula  $O(1)$
 function sumNatuarl2(n){
 
 	return n * (n+1)/2 
 }
 
-// formula with  avoid integer overflow 
+// formula with  avoid integer overflow  $O(1)$
 
 function sumNatural3(n){
 
@@ -25,6 +25,16 @@ function sumNatural3(n){
 	}else{
 		return ((n+1)/2)*n 
 	} 
+}
+
+// with recursion $O(n)$
+
+
+function sumNatural4(n){
+	if(n ==0){
+		return 0 
+	}
+	return n + sumNatural4(n-1)
 }
 
 console.log(sumNatural3(5))
