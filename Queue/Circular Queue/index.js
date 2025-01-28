@@ -1,61 +1,84 @@
+class Queue {
+	constructor(capacity){
+		this.items = new Array()
+		this.capacity = capacity
+		this.length = 0 
+		this.front = -1 
+		this.rear = -1 
+	}
 
-class CircularQueue{
-    constructor(capacity){
-        this.items = new Array(capacity)
-        this.capacity = capacity
-        this.currentLength = 0 
-        this.rear = -1 
-        this.front = -1 
-    }
+	isFull(){
+		return this.capacity == this.length 
+	}
 
-    isFull() {
-        return this.currentLength === this.capacity
-    }
-    isEmpty(){
-        return this.currentLength === 0 
-    }
-    enqueue(element){
-        if(!this.isFull()){
-            this.rear = (this.rear+1)% this.capacity
-            this.items(this.rear) = element
-            this.currentLength++
-            if(this.front === -1){
-                this.front = this.rear
-            }
-        }
-    }
-    dequeue(){
-        if(!this.isEmpty()){
-            return null
-        }
-        const item = this.items(this.front)
-        this.items[this.front] = null 
-        this.front = (this.front+1)% this.capacity
-        this.currentLength--
-        if(this.isEmpty()){
-            this.front = -1
-            this.rear = -1
-        }
-        return itemElement
-    }
-    peak(){
-        if(!this.isEmpty){
-            return this.items(this.front)
-        }
-        return null
-    }
-    print(){
-        if(this.isEmpty()){
-            console.log(`Queue is empty`)
-        }else{
-            let i 
-            let str = ""
-            for(i=this.front;i!= this.rear;i=(i+1)%this.capacity){
-                str += this.items[i] + " "
-            }
-            str += this.items[i]
-            console.log(str)
-        }
-    }
+	isEmpty(){
+		return this.length == 0 
+	}
+	
+	enqueue(value){
+		if(!this.isFull()){	
+			this.rear = (this.rear+1)% this.capacity 
+			this.items[this.rear] = value 
+			if(this.front == -1){
+				this.front = this.rear 
+			}	
 
+			this.length++ 
+		}else {
+			console.log("Queue is Full ")
+			return false 
+		}
+	}
+
+	dequeue(){
+		if(this.isEmpty()){
+			return null 
+		}
+
+		const deleted = this.items[this.front]
+		delete this.items[this.front] 
+		this.front = (this.front+1)% this.capacity 
+		this.length--
+
+		if(this.isEmpty()){
+			this.front = -1 
+			this.rear = -1 
+		}
+		return deleted 
+		
+	}
+
+	peek(){
+		if(this.isEmpty()){
+			return null 
+		}
+		return this.items[this.front]
+	}
+
+	print(){
+		if(this.isEmpty()){
+			console.log("Queue is Empty")
+			return null
+			
+		}
+
+		let i 
+		let str = ""
+		for( i=this.front ; i != this.rear ; i= (i+1)%this.capacity){
+			str += this.items[i] + " "
+		}
+			str+= this.items[this.rear]
+		console.log(str)
+	}
 }
+
+const circularQueue  = new Queue(5)
+circularQueue.print()
+circularQueue.enqueue(12)
+circularQueue.enqueue(23)
+circularQueue.enqueue(235)
+circularQueue.enqueue(65)
+circularQueue.enqueue(243)
+circularQueue.enqueue(98)
+circularQueue.print()
+
