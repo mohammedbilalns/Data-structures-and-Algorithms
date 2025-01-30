@@ -1,22 +1,38 @@
 
 
-
 var isHappy = function(n) {
-    
-    let squaredArr = []
-    let isH = false 
-    while(n!=1 && squaredArr.includes(n)){
-        let strNum = String(n)
-        let digitsArr = strNum.split('').map(elem=>parseInt(elem))
-        n  = digitsArr.reduce((acc,elem)=> acc+= elem*elem, 0 )
-        if(n==1){
-            isH = true
-            break
-        }
-     
-    }
-    return isH
 
+
+	function sumOfSquares(num){
+		let sum = 0 
+		while(num > 0 ){
+			let lastDigit = num %10 
+			sum += lastDigit * lastDigit 
+			num = Math.floor(num/10)
+		} 
+
+		return sum 
+
+	}
+
+
+	let slow = n 
+	let fast = n 
+
+	while(fast  !==1 && sumOfSquares(fast) !==1 ){
+		slow = sumOfSquares(slow)
+		fast = sumOfSquares(sumOfSquares(fast))
+
+		if(fast == slow){
+			return false 
+		}
+	}
+
+	return true 
 };
 
-console.log(isHappy(19))
+
+
+
+
+console.log(isHappy(10))
