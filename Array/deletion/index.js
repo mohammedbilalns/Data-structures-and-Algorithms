@@ -19,6 +19,7 @@ function findIndex(array, element){
 	}
 	return - 1 
 }
+
 function deleteFromArrayUsingElement(array , element){
 
 	let index = findIndex(array, element)

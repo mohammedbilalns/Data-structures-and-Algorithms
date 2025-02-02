@@ -1,8 +1,5 @@
-
-
-
-
-var longestCommonPrefix = function(strs) {
+// first Method 
+var longestCommonPrefix2 = function(strs) {
     
     let longestLength = strs.reduce((acc, elem)=>{
         return acc = elem.length> acc? elem.length: acc 
@@ -30,5 +27,24 @@ var longestCommonPrefix = function(strs) {
 };                                                   
 
 
+var longestCommonPrefix = function(strs){
+	let commonPrefix = ""
+	let firstWord = strs[0]
+
+	for(let i = 0 ; i <firstWord.length ; i++){
+		let char = firstWord[i]
+
+		for(let j=0 ; j < strs.length ; j++){
+
+			if(char!== strs[j][i]){
+				return commonPrefix
+			}
+		}
+		commonPrefix+= char 
+
+	}
+	return commonPrefix
+
+}
 
 console.log(longestCommonPrefix(["flower","flow","flight"]))
