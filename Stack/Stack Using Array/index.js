@@ -1,63 +1,61 @@
-
 class Stack {
-	constructor(){
-		this.items = []
-		this.count = 0 
-	}
+	 constructor(){
+		 this.stack = new Array()
+		 this.size = 0
+	 }
 
-	push(element){
-			
-		this.items[this.count] = element 
-		this.count++ 
-		return this.count-1
-	}
+	 push(value){
 
-	pop(){
-		if(this.count == 0 ){
-			console.log("Stack is Empty")
-			return 
-		}	
-		let removed = this.items[this.count-1]
-		this.count-- 
-		return removed
-	}
+		 this.stack[this.size] = value 
+		 this.size++ 
+	 }
 
-	peek(){
-		if(this.isEmpty()){
-			return "Stack is Empty"
+	 pop(){
+		 if(this.size == 0 ){
+			 return 
+		 }
+		 let removed = this.stack[this.size-1]	
+		 this.size--
+		 return removed 
+	 }
+
+	 peek(){
+		 return this.stack[this.size-1]
+	 }
+
+	reverse(){
+		let i = 0 
+		let j = this.size-1 
+
+		while(i< j){
+			[this.stack[i], this.stack[j]] = [this.stack[j], this.stack[i] ]
+			i++ 
+			j-- 
 		}
 
-		return this.items[this.count -1 ]
-	}
-
-	isEmpty(){
-		return this.items.length == 0 
-	}
-
-	getSize(){
-		return this.count 
 	}
 
 	print(){
-
-		if(this.count == 0 ){
+		if(this.size == 0 ){
 			console.log("Stack is Empty")
-			return 
+		}else {
+
+			let result = ""
+			for(let i=0 ; i<this.size;i++){
+				result+= this.stack[i]+" "
+			}
+
+			console.log(result)
 		}
-		let str = ""
-		for(let i=0;i<this.count ; i++){
-			str += this.items[i]+ ' '
-		}
-		console.log(str)
 	}
+ }
 
-}
 
-
-let stack = new Stack();
-
-stack.push(234)
-stack.push(2342)
+const stack = new Stack()
+stack.push(12)
+stack.push(32)
+stack.print()
+stack.reverse()
 stack.print()
 
 

@@ -68,6 +68,9 @@ class Stack {
 		}
 		console.log(result)
 	}
+
+
+
 }
 
 

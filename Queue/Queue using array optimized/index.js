@@ -1,37 +1,50 @@
 class Queue {
 	constructor(){
 		this.items = {}
-		this.rear = 0 
 		this.front = 0 
+		this.rear = 0 
 	}
 
-	enqueue(element){
-		this.items[this.rear] = element 
+	enqueue(value){
+		this.items[this.rear] = value 
 		this.rear++ 
 	}
 
 	dequeue(){
-
-		if(this.isEmpty){
-			console.log("Queue is Empty")
-			return 
-		}
-		const deletedItem = this.items[this.front] = 
+		const deletedValue = this.items[this.front]
 		delete this.items[this.front]
 		this.front++ 
-		return deletedItem
+		return deletedValue
 	}
 
-	isEmpty(){
-		return this.rear - this.front === 0 
-	}
-
-	peak(){
+	peek(){
 		return this.items[this.front]
 	}
+	
+	reverse(){
+		let tempArray = []
+		while(this.front< this.rear){
+			tempArray.push(this.dequeue())
+		}
 
-	size(){
-		return this.rear- this.front 
+		for(let i= tempArray.length -1 ; i>=0;i-- ){
+			this.enqueue(tempArray[i])
+		}
+
+	}
+
+
+	removeOddNumbers(){
+		let tempQueue = new Queue()
+		while(this.front < this.rear){
+			let value = this.dequeue()
+			if(value%2== 0){
+				tempQueue.enqueue(value)
+			}
+		}
+		this.items = tempQueue.items 
+		this.front = tempQueue.front 
+		this.rear = tempQueue.rear
 	}
 
 	print(){
@@ -40,6 +53,9 @@ class Queue {
 }
 
 const queue = new Queue()
-console.log(queue.isEmpty())
-queue.dequeue()
-
+queue.enqueue(23)
+queue.enqueue(54)
+queue.enqueue(67)
+queue.print()
+queue.removeOddNumbers()
+queue.print()
