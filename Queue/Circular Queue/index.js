@@ -1,84 +1,46 @@
-class Queue {
+class CircularQueue {
 	constructor(capacity){
-		this.items = new Array()
-		this.capacity = capacity
-		this.length = 0 
-		this.front = -1 
-		this.rear = -1 
+		this.items = new Array(capacity).fill(null)
+		this.capacity = capacity 
+		this.front = 0 
+		this.size = 0 
 	}
 
-	isFull(){
-		return this.capacity == this.length 
-	}
-
-	isEmpty(){
-		return this.length == 0 
-	}
-	
 	enqueue(value){
-		if(!this.isFull()){	
-			this.rear = (this.rear+1)% this.capacity 
-			this.items[this.rear] = value 
-			if(this.front == -1){
-				this.front = this.rear 
-			}	
-
-			this.length++ 
-		}else {
-			console.log("Queue is Full ")
-			return false 
-		}
+		
+		if(this.size == this.capacity ) return null
+		let rear = (this.front+this.size)% this.capacity
+		this.items[rear] = value 
+		this.size++ 
 	}
 
 	dequeue(){
-		if(this.isEmpty()){
-			return null 
-		}
-
-		const deleted = this.items[this.front]
-		delete this.items[this.front] 
-		this.front = (this.front+1)% this.capacity 
-		this.length--
-
-		if(this.isEmpty()){
-			this.front = -1 
-			this.rear = -1 
-		}
-		return deleted 
-		
-	}
-
-	peek(){
-		if(this.isEmpty()){
-			return null 
-		}
-		return this.items[this.front]
+		if(this.size == 0 ) return null 
+		let removed = this.items[this.front]
+		this.items[this.front] = null 
+		this.front = (this.front+1)%this.capacity
+		this.size-- 
+		return removed
 	}
 
 	print(){
-		if(this.isEmpty()){
-			console.log("Queue is Empty")
-			return null
-			
-		}
+		let curr = this.front 
+		let result  = ""
 
-		let i 
-		let str = ""
-		for( i=this.front ; i != this.rear ; i= (i+1)%this.capacity){
-			str += this.items[i] + " "
-		}
-			str+= this.items[this.rear]
-		console.log(str)
+		for(let i=0 ;i< this.size ;i++){
+			result += this.items[curr] + " "
+			curr = (curr+1) % this.capacity
+		}	
+
+		console.log(result)
 	}
 }
 
-const circularQueue  = new Queue(5)
-circularQueue.print()
-circularQueue.enqueue(12)
-circularQueue.enqueue(23)
-circularQueue.enqueue(235)
-circularQueue.enqueue(65)
-circularQueue.enqueue(243)
-circularQueue.enqueue(98)
-circularQueue.print()
 
+const queue = new CircularQueue(4)
+queue.enqueue(54)
+queue.enqueue(32)
+queue.enqueue(65)
+queue.enqueue(87)
+queue.dequeue()
+queue.print()
