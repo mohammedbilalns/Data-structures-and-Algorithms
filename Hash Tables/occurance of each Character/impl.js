@@ -1,8 +1,7 @@
-
 class HashTable {
 	constructor(size){
 		this.size = size 
-		this.table = new Array(size)
+		this.table = []
 	}
 
 	hash(key){
@@ -17,9 +16,9 @@ class HashTable {
 		
 		let index = this.hash(key)
 		while(this.table[index] !== undefined){
-			if(this.table[index][0] == key){
-				this.table[index][1] = value 
-				return 
+			if(this.table[index][0]== key){
+				this.table[index][1] = value
+				return
 			}
 			index = (index+1)% this.size 
 		}
@@ -60,12 +59,14 @@ class HashTable {
 	}
 }
 
-let table = new HashTable(10)
-table.set("name","bilal")
-table.set("mane","fskduhf")
-table.set("a", "fsdf")
-table.set("b","iu")
-table.remove("name")
-table.print()
+let countCharacters = function(str){
+	let map  = new HashTable(26)
 
+	for(let i=0 ;i<str.length ;i++){
+		map.set(str[i],(map.get(str[i]) ?? 0)+1)
+	}
 
+	map.print()
+}
+
+countCharacters("mississippi")

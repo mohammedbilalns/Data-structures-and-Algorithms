@@ -17,6 +17,10 @@ class HashTable {
 		let index = this.hash(key)
 		let i = 1 
 		while(this.table[index] !== undefined){
+			if(this.table[index][0]==key){
+				this.table[index][1] = value 
+				return 
+			}
 			index = (index+ i*i ) % this.size
 			i++
 			if(i == this.size) return false 
