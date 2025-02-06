@@ -1,5 +1,5 @@
 
-// worst case O(n^2)(for sroted arrays) avg case  - o(n log n  )
+// worst case O(n^2)(for sorted arrays) avg case  - o(n log n  )
 function quickSort(arr){
 
 	if(arr.length <2){
