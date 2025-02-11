@@ -1,130 +1,171 @@
 class Node {
-	constructor(value){
-		this.value = value 
-		this.right = null 
-		this.left = null 
+	constructor(value) {
+		this.value = value
+		this.left = this.right = null
 	}
+
 }
 
-class BinarySearchTree {
-	constructor(){
-		this.root = null 
+
+class BinaryTree {
+	constructor() {
+		this.root = null
 	}
 
-	isEmpty(){
-		return this.root==null 
-	}
-
-	insert(value){
+	insert(value) {
 		const newNode = new Node(value)
-		if(this.isEmpty()){
-			this.root = newNode 
-		}else {
-			this.insertNode(this.root, newNode)
-		}
-	}
+		if (!this.root) {
+			this.root = newNode
+			return
+		}// check if root is exists 
 
-	insertNode(root , newNode){
-		if(newNode.value< root.value){
-			if(root.left === null ){
-				root.left = newNode
-			}else{
-				this.insertNode(root.left , newNode)
+		function insertRercursively(node) {
+			if (value < node.value) {
+				if (!node.left) node.left = newNode
+				else insertRercursively(node.left)
+			} else {
+				if (!node.right) node.right = newNode
+				else insertRercursively(node.right)
 			}
-		}else {
-			if(root.right === null){
-				root.right = newNode 
-			}else{
-				this.insertNode(root.right, newNode)
-			}
-		}
+		}// recursively insert new node 
+
+		insertRercursively(this.root)
 	}
 
-
-	search(root, value){
-		if(!root){
-			return false 
-		}else {
-			if(root.value == value ){
-				return true 
-			}else if( value < root.value){
-				return this.search(root.left, value)
-			}else{
-				return this.search(root.right, value )
-			}
+	search(value) {
+		function searchRecursively(node) {
+			if (!node) return null
+			if (node.value == value) return node
+			return value < node.value ? node.left : node.right
 		}
-	}
+		return searchRecursively(this.root)
+	} // search for a node with a value 
 
-	preorder(root){
-		if(root){
-			console.log(root.value)
-			this.preorder(root.left)
-			this.preorder(root.right)
+	preOrderTraversal(node = this.root, result = []) {
+		if (node) {
+			result.push(node.value)
+			this.preOrderTraversal(node.left, result)
+			this.preOrderTraversal(node.right, result)
 		}
-	}
+		return result
+	} // curr, left, right 
 
-	inorder(root){
-		if(root){
-			this.inorder(root.left)
-			console.log(root.value)
-			this.inorder(root.right)
+	inOrderTraversal(node = this.root, result = []) {
+		if (node) {
+			this.inOrderTraversal(node.left, result)
+			result.push(node.value)
+			this.inOrderTraversal(node.right, result)
 		}
-	}
+		return result
+	}//  left , curr , right 
 
-	postorder(root){
-		if(root){
-			this.postorder(root.left)
-			this.postorder(root.right)
-			console.log(root.value )
+	postOrderTraversal(node = this.root, result = []) {
+		if (node) {
+			this.postOrderTraversal(node.left, result)
+			this.postOrderTraversal(node.right, result)
+			result.push(node.value)
 		}
-	}
-	
-	 
-	levelOrder(){
+		return result
+	}// left right  curr 
 
+	levelOrderTraversal(node = this.root, result = []){
 		const queue = []
 		queue.push(this.root)
-		while(queue.length ){
-			let curr = queue.shift 
-			console.log(curr.value )
+		while(queue.length !== 0 ){
+			let curr = queue.shift()
+			result.push(curr.value)
 			if(curr.left){
 				queue.push(curr.left)
 			}
+
 			if(curr.right){
 				queue.push(curr.right)
 			}
 		}
-	}
+		return result
 
-	min(root){
-		if(!root.left){
-			return root.value 
-		}else {
-			return this.min(root.left)
+	}//  
+
+	getMin(node = this.root){
+		while(node.left ){
+			node = node.left 
 		}
+
+		return node 
+	}// find the minimum element 
+
+	getMax(node = this.root ){
+		while(node.right){
+			node = node.right 
+		}
+		return node 
+	}// find the maximum element 
+
+	getHeightFromNode(node = this.root){
+		if(!node) return -1
+		if(!node.left && !node.right) return 0 
+		return Math.max(this.getHeight(node.left), this.getHeight(node.right))+1 
+	}
+	getHeightFromValue(value){
+		const node = this.search(value)
+		return this.getHeightFromNode(node)
 	}
 
-	max(root){
-		if(!root.right){
-			return root.value 
+	getDepth(node = this.root, curr = this.root, depth=0 ){
+		if(!curr) return -1 
+		if(curr == node ) return depth 
+
+		if(node.value < curr.value){
+			return this.getDepth(node, curr.left, depth+1)
 		}else{
-			return this.max(root.right)
+			return this.getDepth(node, curr.right, depth+1 )
 		}
 	}
-	
-	delete(value){
+
+	remove(value){
+		this.root = this.removeNode(this.root, value)
+	}
+
+	removeNode(node, value){
+		if(!node) return null 
+
+		if(value < node.value){
+			node.left = this.removeNode(node.left, value)
+		}else if(value> node.value) {
+			node.right = this.removeNode(node.right, value)
+		}else {
+
+			if(!node.left && !node.right){
+				return null 
+			}
+
+
+			if(!node.left) return node.right 
+			if(!node.right) return node.left 
+
+			let minRight = this.getMin(node.right)
+			node.value = minRight.value 
+			node.right = this.removeNode(node.right , minRight.value)
+		}
+		
+		return node 
 
 	}
+
+	
 
 }
 
+const tree = new BinaryTree();
+tree.insert(10);
+tree.insert(5);
+tree.insert(15);
+tree.insert(2);
+tree.insert(7);
+tree.insert(12);
+tree.insert(20);
 
-const bst = new BinarySearchTree()
-console.log(bst.isEmpty())
-bst.insert(10)
-bst.insert(5)
-bst.insert(15)
-bst.insert(3)
-bst.insert(7)
-bst.postorder(bst.root)
+let nd = tree.search(5)
+tree.remove(5)
+console.log(tree.preOrderTraversal())
 

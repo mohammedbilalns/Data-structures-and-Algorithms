@@ -39,7 +39,7 @@ class Queue {
 	}
 
 	dequeue(){
-		while(this.stack1.size > 0 ){
+		while(this.stack1.size > 1 ){
 			this.stack2.push(this.stack1.pop())
 		}
 		let deleted = this.stack2.pop()

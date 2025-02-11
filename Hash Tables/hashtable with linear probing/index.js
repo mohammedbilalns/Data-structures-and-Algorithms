@@ -9,7 +9,8 @@ class HashTable {
 		let total = 0 
 		for(let i=0 ;i<key.length ;i++){
 			total += key.charCodeAt(i)
-		}	
+		}
+
 		return total % this.size
 	}
 
@@ -38,13 +39,16 @@ class HashTable {
 	}
 
 	remove(key){
+
 		let index = this.hash(key)
 		while(this.table[index]!== undefined){
+
 			if(this.table[index][0] == key){
 				let removed = this.table[index][0]
 				this.table[index] = undefined
 				return removed 
 			}
+			
 			index = (index+1) % this.size 
 		}
 
