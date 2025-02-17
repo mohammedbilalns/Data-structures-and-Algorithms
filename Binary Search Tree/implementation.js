@@ -11,6 +11,7 @@ class BinaryTree {
 	constructor() {
 		this.root = null
 	}
+//---- inserting a node given the value   ---- 
 
 	insert(value) {
 		const newNode = new Node(value)
@@ -32,14 +33,18 @@ class BinaryTree {
 		insertRercursively(this.root)
 	}
 
+//---- seraching for a node given its value ----- 
+
 	search(value) {
 		function searchRecursively(node) {
 			if (!node) return null
 			if (node.value == value) return node
-			return value < node.value ? node.left : node.right
+			return value < node.value ? searchRecursively(node.left) : searchRecursively(node.right)
 		}
 		return searchRecursively(this.root)
 	} // search for a node with a value 
+
+//---- Depth First Search ----- 
 
 	preOrderTraversal(node = this.root, result = []) {
 		if (node) {
@@ -68,24 +73,30 @@ class BinaryTree {
 		return result
 	}// left right  curr 
 
-	levelOrderTraversal(node = this.root, result = []){
-		const queue = []
-		queue.push(this.root)
-		while(queue.length !== 0 ){
-			let curr = queue.shift()
-			result.push(curr.value)
-			if(curr.left){
-				queue.push(curr.left)
-			}
+//---- Depth First Search ---- 
+	levelOrderTraversal(){
 
-			if(curr.right){
-				queue.push(curr.right)
+		if(!this.root) return []
+		let result = []
+		const queue = [this.root]
+		while(queue.length > 0 ){
+			let levelSize = queue.length 
+			let levelNodes = []
+
+			for(let i=0 ;i <levelSize ; i++){
+				let node = queue.shift()
+				levelNodes.push(node.value)
+
+				if(node.left) queue.push(node.left)
+				if(node.right) queue.push(node.right)
 			}
+			result.push(levelNodes)
 		}
+
 		return result
 
 	}//  
-
+//---- Minium and  maximum values from the tree 
 	getMin(node = this.root){
 		while(node.left ){
 			node = node.left 
@@ -94,6 +105,28 @@ class BinaryTree {
 		return node 
 	}// find the minimum element 
 
+	getSecondMin(node = this.root){
+		let minimum = Infinity 
+		let secondMinimum = Infinity 
+
+		function inOrder(node){
+			if(!node) return 
+
+			inOrder(node.left)
+			if(node.value< minimum){
+				secondMinimum = minimum
+				minimum = node.value 
+			}else if(node.value < secondMinimum && node.value > minimum){
+				secondMinimum = node.value 
+			}
+			inOrder(node.right)
+
+		}
+
+		inOrder(node)
+		return secondMinimum
+	} 
+
 	getMax(node = this.root ){
 		while(node.right){
 			node = node.right 
@@ -101,15 +134,19 @@ class BinaryTree {
 		return node 
 	}// find the maximum element 
 
-	getHeightFromNode(node = this.root){
+//---- Get the hieght of the node ---- 
+	getHeightFN(node = this.root){
 		if(!node) return -1
 		if(!node.left && !node.right) return 0 
 		return Math.max(this.getHeight(node.left), this.getHeight(node.right))+1 
-	}
-	getHeightFromValue(value){
+	}// get the height given the node 
+
+	getHeightFV(value){
 		const node = this.search(value)
 		return this.getHeightFromNode(node)
-	}
+	}// get the height given the value 
+
+//------ Get the depth  ---- 
 
 	getDepth(node = this.root, curr = this.root, depth=0 ){
 		if(!curr) return -1 
@@ -121,6 +158,12 @@ class BinaryTree {
 			return this.getDepth(node, curr.right, depth+1 )
 		}
 	}
+	maxDepth(node = this.root){
+		if(!node) return 0 
+		return 1+Math.max(this.maxDepth(node.left), this.maxDepth(node.right))
+	}
+
+//----- Remove node from the tree ---- 
 
 	remove(value){
 		this.root = this.removeNode(this.root, value)
@@ -152,8 +195,59 @@ class BinaryTree {
 
 	}
 
-	
+	isBST(node = this.root, min = -Infinity , max = Infinity){
+		if(!node) return true 
 
+		if(node.value <= min || node.value >= max){
+			return false 
+		}
+
+		return (this.isBST(node.left , min , node.value) && this.isBST(node.right, node.value , max))
+	}
+
+	areIdentical(node1 , node2){
+		if(!node1 && !node2) return true 
+		if(!node1 || !node2) return false 
+		if(node1.value !== node2.value) return false 
+
+		return (this.areIdentical(node1.left , node2.left)&& this.areIdentical(node1.right , node2.right))
+	}
+
+	isSubTree(largeTreeRoot , smallTreeRoot){
+		if(!smallTreeRoot)return true 
+		if(!largeTreeRoot) return false 
+
+		if(this.areIdentical(largeTreeRoot, smallTreeRoot)) return true 
+
+		return (
+            this.isSubtree(largeTreeRoot.left, smallTreeRoot) ||
+            this.isSubtree(largeTreeRoot.right, smallTreeRoot)
+        );
+	}
+	findSecondLargest(root) {
+        if (!root || (!root.left && !root.right)) return null; // No second largest if there's only 1 node
+
+        let parent = null;
+        let curr = root;
+
+        // Find the rightmost (largest) node
+        while (curr.right) {
+            parent = curr; // Track the parent of the largest node
+            curr = curr.right;
+        }
+
+        // Case 1: Largest node has a left subtree
+        if (curr.left) {
+            let secondLargest = curr.left;
+            while (secondLargest.right) {
+                secondLargest = secondLargest.right;
+            }
+            return secondLargest.value;
+        }
+
+        // Case 2: Largest node has no left subtree, return parent
+        return parent.value;
+    }
 }
 
 const tree = new BinaryTree();
@@ -167,5 +261,5 @@ tree.insert(20);
 
 let nd = tree.search(5)
 tree.remove(5)
-console.log(tree.preOrderTraversal())
+console.log(tree.getSecondMin())
 
