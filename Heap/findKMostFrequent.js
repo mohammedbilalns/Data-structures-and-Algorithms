@@ -35,7 +35,7 @@ class minHeap {
         if (leftChildIndex< this.heap.length &&  this.heap[smallest][1] > this.heap[leftChildIndex][1]) {
             smallest = leftChildIndex
         }
-        if (leftChildIndex < this.heap.length &&  this.heap[smallest][1] > this.heap[rightChildIndex][1]) {
+        if (rightChildIndex < this.heap.length &&  this.heap[smallest][1] > this.heap[rightChildIndex][1]) {
             smallest = rightChildIndex
         }
 
@@ -60,57 +60,41 @@ class minHeap {
         this.heapifyDown(0)
         return smallest
     }
+    print(){
+        console.log(this.heap)
+    }
 }
 
 
-// function mostFrequentK(arr, k ){
-//     let freqMap = new Map()
-//     let heap = new minHeap()
-
-//     let result = []
-
-//     for(let i=0 ; i< arr.length ; i++){
-//         freqMap.set(arr[i] , (freqMap.get(arr[i])?? 0)+1 )
-//     }
-
-//     for(let [elem , freq] of freqMap.entries()){
-//         heap.insert([elem , freq])
-//     }
-
-//     for(let i=0 ; i<k ; i++){
-//         result.push(heap.removeSmallest())
-//     }
-
-//     return result 
-// }
-
-function mostFrequentK(arr, k) {
+function mostFrequentK(arr, k ){
     let freqMap = new Map()
     let heap = new minHeap()
+
     let result = []
 
-    // Step 1: Count frequency of each element
-    for (let num of arr) {
-        freqMap.set(num, (freqMap.get(num) || 0) + 1)
+    for(let i=0 ; i< arr.length ; i++){
+        freqMap.set(arr[i] , (freqMap.get(arr[i])?? 0)+1 )
     }
 
-    // Step 2: Use a Min Heap (of size k)
-    for (let [num, freq] of freqMap.entries()) {
-        heap.insert([num, freq])
-        if (heap.heap.length > k) {
+    for (let [elem, freq] of freqMap.entries()) {
+        if (heap.heap.length < k) {
+            heap.insert([elem, freq])
+        } else if (freq > heap.heap[0][1]) {
             heap.removeSmallest()
+            heap.insert([elem, freq])
         }
     }
 
-    // Step 3: Extract k most frequent elements
-    while (heap.heap.length > 0) {
-        result.push(heap.removeSmallest()[0]) // Extract only the element, not its frequency
+    while(heap.heap.length >0){
+        result.push(heap.removeSmallest()[0])
     }
-
-    return result.reverse() // Reverse to maintain descending order of frequency
+    
+    return result.reverse()
+    
 }
 
 
-console.log(mostFrequentK([4,6,2,6,7,2,7,2,7,4,6,2,2,4,5,6,4,3,7,3,6,3]))
+
+console.log(mostFrequentK([4,6,2,6,7,2,7,2,7,4,6,2,2,4,5,6,4,3,7,3,6,3],3))
 
 

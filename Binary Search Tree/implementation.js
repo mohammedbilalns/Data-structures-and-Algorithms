@@ -6,7 +6,6 @@ class Node {
 
 }
 
-
 class BinaryTree {
 	constructor() {
 		this.root = null
@@ -53,7 +52,7 @@ class BinaryTree {
 			this.preOrderTraversal(node.right, result)
 		}
 		return result
-	} // curr, left, right 
+	} // curr, left, right  
 
 	inOrderTraversal(node = this.root, result = []) {
 		if (node) {
@@ -79,6 +78,7 @@ class BinaryTree {
 		if(!this.root) return []
 		let result = []
 		const queue = [this.root]
+		
 		while(queue.length > 0 ){
 			let levelSize = queue.length 
 			let levelNodes = []
@@ -93,9 +93,9 @@ class BinaryTree {
 			result.push(levelNodes)
 		}
 
-		return result
+		return results
+	}
 
-	}//  
 //---- Minium and  maximum values from the tree 
 	getMin(node = this.root){
 		while(node.left ){
