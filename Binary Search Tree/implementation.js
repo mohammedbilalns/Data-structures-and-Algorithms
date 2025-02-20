@@ -170,8 +170,8 @@ class BinaryTree {
 		this.root = this.removeNode(this.root, value)
 	}
 
-	removeNode(node, value) {
-		if (!node) return null
+	removeNode(node, value) {  
+		if (!node) return node 
 
 		if (value < node.value) {
 			node.left = this.removeNode(node.left, value)
@@ -182,7 +182,6 @@ class BinaryTree {
 			if (!node.left && !node.right) {
 				return null
 			}
-
 
 			if (!node.left) return node.right
 			if (!node.right) return node.left
