@@ -38,30 +38,47 @@ class Tree {
         }
     }
 
-    countNodes() {
-        let count = 0
+    getDepth(){
+        
+        let depth = -1 
         let queue = [this.root]
 
-        while (queue.length > 0) {
-            let curr = queue.shift()
-            count++
-            if (curr.left) {
-                queue.push(curr.left)
+        while(queue.length > 0 ){
+            let levelSize = queue.length
+            depth +=1  
+            for(let i=0 ; i< levelSize; i++ ){
+                let curr = queue.shift()
+                if(curr.left) queue.push(curr.left)
+                if(curr.right) queue.push(curr.right)
             }
-            if (curr.right) {
-                queue.push(curr.right)
-            }
-
         }
+        return depth 
 
-        return count
     }
+
+    depthOfNode(value ){
+        let curr = this.root 
+        let depth = 0
+        while(curr){
+            if(curr.value == value){
+                return depth
+            }
+            depth++
+            curr = value < curr.value ? curr.left : curr.right 
+        }
+        return -1 
+    }
+
 }
 
-const tree = new Tree()
-tree.insert(10)
-tree.insert(4)
-tree.insert(8)
-tree.insert(2)
+
+let tree = new Tree()
 tree.insert(6)
-console.log(tree.countNodes())
+tree.insert(8)
+tree.insert(1)
+tree.insert(2)
+tree.insert(3)
+tree.insert(0)
+
+console.log(tree.depthOfNode(0))
+
