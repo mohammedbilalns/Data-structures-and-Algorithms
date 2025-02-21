@@ -1,5 +1,5 @@
 
-class minHeap {
+class MinHeap {
     constructor() {
         this.heap = []
     }
@@ -66,35 +66,26 @@ class minHeap {
 }
 
 
-function mostFrequentK(arr, k ){
-    let freqMap = new Map()
-    let heap = new minHeap()
+function topKFrequent(nums, k) {
+    let freqMap = new Map();
 
-    let result = []
-
-    for(let i=0 ; i< arr.length ; i++){
-        freqMap.set(arr[i] , (freqMap.get(arr[i])?? 0)+1 )
+    // Step 1: Count Frequency
+    for (let num of nums) {
+        freqMap.set(num, (freqMap.get(num) || 0) + 1);
     }
 
-    for (let [elem, freq] of freqMap.entries()) {
-        if (heap.heap.length < k) {
-            heap.insert([elem, freq])
-        } else if (freq > heap.heap[0][1]) {
-            heap.removeSmallest()
-            heap.insert([elem, freq])
+    // Step 2: Use MinHeap to store top K elements
+    let minHeap = new MinHeap();
+    for (let [num, freq] of freqMap.entries()) {
+        minHeap.insert([num, freq]);
+        if (minHeap.heap.length > k) {
+            minHeap.removeSmallest(); // Remove the least frequent element
         }
     }
 
-    while(heap.heap.length >0){
-        result.push(heap.removeSmallest()[0])
-    }
-    
-    return result.reverse()
-    
+    // Step 3: Extract elements from heap
+    return minHeap.heap.map(entry => entry[0]);
 }
-
-
-
-console.log(mostFrequentK([4,6,2,6,7,2,7,2,7,4,6,2,2,4,5,6,4,3,7,3,6,3],3))
+console.log(topKFrequent([4,6,2,6,7,2,7,2,7,4,6,2,2,4,5,6,4,3,7,3,6,3],3))
 
 

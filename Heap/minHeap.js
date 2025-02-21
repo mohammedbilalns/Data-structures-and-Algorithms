@@ -58,6 +58,7 @@ class minHeap {
         }
 
     }
+
     insert(value) {
         this.heap.push(value)
         this.heapifyUp(this.heap.length - 1)
@@ -74,6 +75,7 @@ class minHeap {
         return smallest
     }
 
+    
     decreaseKey(index, newValue) {
         if (index < 0 || index >= this.heap.length || newValue > this.heap[index]) {
             console.log("Invalid operation ")

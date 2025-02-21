@@ -91,27 +91,6 @@ class maxHeap{
     
 }
 
-function buildHeap(arr){
-    let newHeap = new maxHeap()
-    newHeap.heap = arr 
-
-    let lastNonLeafIndex =  Math.floor(newHeap.heap.length/2)-1
-    for(let i = lastNonLeafIndex ; i>= 0 ; i--){
-        newHeap.heapifyDown(i)
-    } 
-    return newHeap 
-}
-
-function heapSort(arr){
-    let newHeap = buildHeap(arr)
-    let result = []
-
-    while(newHeap.heap.length > 0 ){
-        result.push(newHeap.removeLargest())
-    }
-    return result
-}
-
 
 
 
