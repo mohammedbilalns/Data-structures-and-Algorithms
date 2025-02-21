@@ -35,59 +35,85 @@ class Trie {
 
 
     startsWith(word) {
-        let node = this.root 
-        for(let char of word){
-            if(!node.children[char]){
-                return false 
+        let node = this.root
+        for (let char of word) {
+            if (!node.children[char]) {
+                return false
             }
             node = node.children[char]
         }
-        return true 
+        return true
     }
 
-    delete(word){
-        this.deleteHelper(this.root, word, 0 )
-    }
+    // delete(word) {
+    //     this.deleteHelper(this.root, word, 0)
+    // }
 
-    deleteHelper( node,  word, index){
+    // deleteHelper(node, word, index) {
 
-        if(index == word.length){
-            if(!node.isEndOfWord){
-                return false 
-            }
+    //     if (index == word.length) {
+    //         if (!node.isEndOfWord) {
+    //             return false
+    //         }
 
-            node.isEndOfWord = false 
-            return Object.keys(node.children).length == 0 
-        }
-        
-        let char = word[index]
-        if(!node.children[char]) return false 
+    //         node.isEndOfWord = false
+    //         return Object.keys(node.children).length == 0
+    //     }
 
-        let shouldDeleteChild = this.deleteHelper(node.children[char], word , index+1)
+    //     let char = word[index]
+    //     if (!node.children[char]) return false
 
-        if(shouldDeleteChild){
-            delete node.children[char]
-            return Object.keys(node.children).length == 0 && !node.isEndOfWord
-        }
-    }
+    //     let shouldDeleteChild = this.deleteHelper(node.children[char], word, index + 1)
 
-    replace(oldWord, newWord){
-        if(this.search(oldWord)){
+    //     if (shouldDeleteChild) {
+    //         delete node.children[char]
+    //         return Object.keys(node.children).length == 0 && !node.isEndOfWord
+    //     }
+    // }
+
+    replace(oldWord, newWord) {
+        if (this.search(oldWord)) {
             this.delete(oldWord)
             this.insert(newWord)
         }
     }
 
-    countWords(node = this.root){
-        
-        let count = 0 
-        if(node.isEndOfWord){
-            count++ 
+    delete(word) {
+        let node = this.root;
+        const stack = [];
+
+        // Traverse the trie and store nodes in stack
+        for (const char of word) {
+            if (!node.children[char]) return; // Word not found
+            stack.push([node, char]); // Store parent node and current char
+            node = node.children[char];
         }
-        for(let char in node.children){
+
+        if (!node.isEndOfWord) return; // Word not found
+
+        node.isEndOfWord = false; // Unmark the end of word
+
+        // Cleanup unnecessary nodes from bottom up
+        while (stack.length > 0) {
+            const [parent, char] = stack.pop();
+            if (!node.isEndOfWord && Object.keys(node.children).length === 0) {
+                delete parent.children[char]; // Remove child reference
+            } else {
+                break; // Stop if node has children or is an end of another word
+            }
+            node = parent;
+        }
+    }
+    countWords(node = this.root) {
+
+        let count = 0
+        if (node.isEndOfWord) {
+            count++
+        }
+        for (let char in node.children) {
             count += this.countWords(node.children[char])
         }
-        return count 
+        return count
     }
 }
 
@@ -96,4 +122,5 @@ trie.insert("cat")
 trie.insert("category")
 trie.insert("rew")
 trie.insert("oire")
-console.log(trie.countWords())
+trie.delete("category")
+console.log(trie.search("cat"))
