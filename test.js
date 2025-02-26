@@ -1,96 +1,110 @@
-
-
-
-// function mergeSort(arr1, arr2){
-//     let arr = [...arr1 , ...arr2]
-    
-//     if(arr.length <2){
-//         return arr
-//     }
-    
-//     let mid = Math.floor(arr.length /2)
-//     let left = arr.slice(0,mid)
-//     let right = arr.slice(mid)
-    
-//     return merge(mergeSort(left), mergeSort(right))
-// }
-
-
-
-// function merge(left , right){
-    
-//     let sortedArr = []
-//     let i=0 
-//     let j=0 
-    
-//     while(i<left.length && j< right.length){
-//         if(left[i]< right[j]){
-//             sortedArr.push(left[i])
-//             i++
-//         }else{
-//             sortedArr.push(right[j])
-//             j++
-//         }
-//     }
-//     if(i<left.length){
-//         sortedArr.push(left[i])
-//         i++
-//     }
-//     if(j< right.length){
-//         sortedArr.push(right[i])
-//         j++
-//     }
-    
-//     return sortedArr
-// }
-
-
-// console.log(mergeSort([4,6,2],[9,4,2]))
-
-function mergeSort(arr) {
-    // Base case
-    if (arr.length < 2) {
-        return arr;
-    }
-    
-    // Split array in half
-    const mid = Math.floor(arr.length / 2);
-    const left = arr.slice(0, mid);
-    const right = arr.slice(mid);
-    
-    // Recursive calls and merge
-    return merge(mergeSort(left), mergeSort(right));
+class TreeNode {
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+  }
 }
 
-function merge(left, right) {
-    const sortedArr = [];
-    let i = 0;
-    let j = 0;
-    
-    // Compare elements from both arrays
-    while (i < left.length && j < right.length) {
-        if (left[i] < right[j]) {
-            sortedArr.push(left[i]);
-            i++;
-        } else {
-            sortedArr.push(right[j]);
-            j++;
+class Tree {
+  constructor() {
+    this.root = null;
+  }
+
+  insert(value) {
+    const newNode = new TreeNode(value);
+    if (!this.root) {
+      this.root = newNode;
+      return;
+    }
+
+    let curr = this.root;
+    while (true) {
+      if (value < curr.value) {
+        if (!curr.left) {
+          curr.left = newNode;
+          return;
         }
+        curr = curr.left;
+      } else if (value > curr.value) {
+        if (!curr.right) {
+          curr.right = newNode;
+          return;
+        }
+        curr = curr.right;
+      } else {
+        return;
+      }
     }
-    
-    // Push remaining elements
-    while (i < left.length) {
-        sortedArr.push(left[i]);
-        i++;
+  }
+
+  getHeight(node = this.root) {
+    if (!node) return 0;
+    return Math.max(this.getHeight(node.left), this.getHeight(node.right)) + 1;
+  }
+
+  bfs() {
+    let queue = [this.root];
+    let result = [];
+    while (queue.length > 0) {
+      let curr = queue.shift();
+      result.push(curr.value);
+      if (curr.left) {
+        queue.push(curr.left);
+      }
+      if (curr.right) {
+        queue.push(curr.right);
+      }
     }
-    
-    while (j < right.length) {
-        sortedArr.push(right[j]);
-        j++;
+    return result;
+  }
+
+  inOrder(node = this.root, result = []) {
+    if (node) {
+      this.inOrder(node.left, result);
+      result.push(node.value);
+      this.inOrder(node.right, result);
     }
-    
-    return sortedArr;
+    return result;
+  }
+
+  getMin(node = this.root) {
+    let curr = this.root;
+    while (curr.left) {
+      curr = curr.left;
+    }
+    return curr.value;
+  }
+  remove(value) {
+    this.root = this.removeNode(this.root, value);
+  }
+
+  removeNode(node, value) {
+    if (!node) return null;
+
+    if (value < node.value) {
+      node.left = this.removeNode(node.left, value);
+    } else if (value > node.value) {
+      node.right = this.removeNode(node.right, value);
+    } else {
+      if (!node.left && !node.right) return null;
+      if (!node.left) return node.right;
+      if (!node.right) return node.left;
+
+      let successor = this.getMin(node.right);
+      node.value = successor;
+      node.right = this.removeNode(node.right, successor);
+    }
+    return node;
+  }
 }
 
-// To merge two sorted arrays, you can concatenate them first
-console.log(mergeSort([4, 6, 2, 9, 4, 2]));  // [2, 2, 4, 4, 6, 9]
+const tree = new Tree();
+tree.insert(4);
+tree.insert(2);
+tree.insert(9);
+tree.insert(8);
+tree.insert(1);
+console.log(tree.inOrder());
+tree.remove(9);
+console.log(tree.inOrder());

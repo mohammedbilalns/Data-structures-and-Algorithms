@@ -56,7 +56,7 @@ class Trie {
         let queue = [[node, prefix]]
 
         while(queue.length> 0 ){
-            let [currentNode , wordSoFar] = queue.pop()
+            let [currentNode , wordSoFar] = queue.shift()
 
             if(currentNode.isEndOfWord) suggestions.push(wordSoFar)
             for(let char in currentNode.children){
@@ -73,4 +73,4 @@ const trie = new Trie()
 trie.insert("cat")
 trie.insert("cte")
 trie.insert("fskdjh")
-console.log(trie.autosuggest(''))
+console.log(trie.autosuggest('c'))
