@@ -7,3 +7,9 @@ class TreeNode {
     this.right = null;
   }
 }
+
+class BST {
+  cosntructo() {
+    this.roo;
+  }
+}

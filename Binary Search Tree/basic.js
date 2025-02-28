@@ -1,4 +1,4 @@
-// implement bst in js with preorder dfs traversals insert and delte and get minimum
+// implement bst in js with preorder dfs traversals insert and delete and get minimum
 
 class TreeNode {
   constructor(value) {
