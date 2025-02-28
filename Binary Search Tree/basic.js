@@ -1,102 +1,118 @@
+// implement bst in js with preorder dfs traversals insert and delte and get minimum
 
 class TreeNode {
-    constructor(value) {
-        this.value = value
-        this.left = null
-        this.right = null
-    }
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+  }
 }
-
 
 class BST {
+  constructor() {
+    this.root = null;
+  }
 
-    constructor() {
-        this.root = null
+  insert(value) {
+    const newNode = new TreeNode(value);
+    if (!this.root) {
+      this.root = newNode;
+      return;
     }
 
-    // insert a node 
-    insert(value) {
-        const newNode = new TreeNode(value)
-
-        if (!this.root) {
-            this.root = newNode
-            return
+    let curr = this.root;
+    while (true) {
+      if (value < curr.value) {
+        if (!curr.left) {
+          curr.left = newNode;
         }
-
-        function insertRecursively(node) {
-            if (value < node.value) {
-                if (!node.left) node.left = newNode
-                else insertRecursively(node.left)
-            } else {
-                if (!node.right) node.right = newNode
-                else insertRecursively(node.right)
-            }
+        curr = curr.left;
+      } else if (value > curr.value) {
+        if (!curr.right) {
+          curr.right = newNode;
         }
-        insertRecursively(this.root)
+        curr = curr.right;
+      } else {
+        return;
+      }
     }
+  }
 
-    // search a node with a value 
-    search(value) {
-        function searchRecursively(node) {
-            if (!node) return null
-            if (node.value == value) return node
-            return value < node.value ? searchRecursively(node.left) : searchRecursively(node.right)
-        }
-
-        return searchRecursively(this.root)
+  search(value) {
+    let curr = this.root;
+    while (curr) {
+      if (curr.value == value) return curr;
+      curr = value < curr.value ? curr.left : curr.right;
     }
+    return null;
+  }
 
-    // Depth First search 
-    preOrder(node = this.root, result = []) {
-        if (node) {
-            result.push(node.value)
-            this.preOrder(node.left, result)
-            this.preOrder(node.right, result)
-        }
-        return result
+  getMin(node) {
+    let curr = node;
+    while (curr.left) {
+      curr = curr.left;
     }
+    return curr;
+  }
+  remove(value) {
+    this.root = this.removeNode(this.root, value);
+  }
 
-    inOrder(node = this.root, result = []) {
-        if (node) {
-            this.inOrder(node.left, result)
-            result.push(node.value)
-            this.inOrder(node.right, result)
-        }
-        return result
+  removeNode(node, value) {
+    if (!node) return null;
+    if (value < node.value) {
+      node.left = this.removeNode(node.left, value);
+    } else if (value > node.value) {
+      node.right = this.removeNode(node.right, value);
+    } else {
+      if (!node.left && !node.right) return null;
+      if (!node.left) return node.right;
+      if (!node.right) return node.left;
+
+      let successor = this.getMin(node.right);
+      node.value = successor.value;
+      node.right = this.removeNode(node.right, successor.value);
     }
+    return node;
+  }
 
-    postOrder(node = this.root , result  =[]){
-        if(node){
-            this.postOrder(node.left, result)
-            result.push(node.value)
-            this.postOrder(node.right, result)
-        }
-        return result
+  preOrder(node = this.root, result = []) {
+    if (node) {
+      result.push(node.value);
+      this.preOrder(node.left, result);
+      this.preOrder(node.right, result);
     }
+    return result;
+  }
 
-    levelOrder(){
-        let result  = []
-        let queue = [this.root]
+  bfs() {
+    let queue = [this.root];
+    let result = [];
 
-        while(queue.length > 0 ){
-            let curr = queue.shift()
-            result.push(curr.value)
-            if(curr.left){
-                queue.push(curr.left)
-            }
-            if(curr.right){
-                queue.push(curr.right)
-            }
+    while (queue.length > 0) {
+      let levelItems = [];
+      let levelSize = queue.length;
+
+      for (let i = 0; i < levelSize; i++) {
+        let curr = queue.shift();
+        levelItems.push(curr.value);
+        if (curr.left) {
+          queue.push(curr.left);
         }
-        return result 
+        if (curr.right) {
+          queue.push(curr.right);
+        }
+      }
+      result.push(levelItems);
     }
-    
-
+    return result;
+  }
 }
 
-let bst = new BST()
-bst.insert(4)
-bst.insert(8)
-bst.insert(1)
-bst.insert(7)
-console.log(bst.levelOrder())
+const tree = new BST();
+tree.insert(5);
+tree.insert(8);
+tree.insert(3);
+tree.insert(7);
+tree.remove(8);
+console.log(tree.bfs());
