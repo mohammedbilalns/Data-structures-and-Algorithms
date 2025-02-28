@@ -1,68 +1,65 @@
-class PriorityQueue{
-    constructor(){
-        this.heap = []
+// impelment priority queue
+class PriorityQueue {
+  constructor() {
+    this.heap = [];
+  }
+
+  queue(value, priority) {
+    this.heap.push({ value, priority });
+    this.heapifyUp(this.heap.length - 1);
+  }
+
+  dequeue() {
+    let { value, priority } = this.heap[0];
+    this.heap[0] = this.heap.pop();
+    this.heapifyDown(0);
+    return value;
+  }
+
+  swap(a, b) {
+    [this.heap[a], this.heap[b]] = [this.heap[b], this.heap[a]];
+  }
+  heapifyUp(index) {
+    let parentIndex = Math.floor((index - 1) / 2);
+    if (
+      parentIndex >= 0 &&
+      this.heap[index].priority > this.heap[parentIndex].priority
+    ) {
+      this.swap(index, parentIndex);
+      this.heapifyUp(parentIndex);
+    }
+  }
+
+  heapifyDown(index) {
+    let largest = index;
+    let left = 2 * index + 1;
+    let right = 2 * index + 2;
+
+    if (
+      left < this.heap.length &&
+      this.heap[left].priority > this.heap[largest].priority
+    ) {
+      largest = left;
+    }
+    if (
+      right < this.heap.length &&
+      this.heap[right].priority > this.heap[largest].priority
+    ) {
+      largest = right;
     }
 
-    getLeftChildIndex(index){
-        return 2*index+1 
+    if (largest !== index) {
+      this.swap(largest, index);
+      this.heapifyDown(largest);
     }
-    getRightChildIndex(index){
-        return 2*index+2 
-    }
-    getParentIndex(index){
-        return Math.floor((index-1)/2)
-    }
-    hasParent(index){
-        return this.getParentIndex(index) >= 0 
-    }
-    swap(a,b){
-        [this.heap[a], this.heap[b]] = [this.heap[b], this.heap[a]]
-    }
+  }
 
-    heapifyUp(index){
-        if(this.hasParent(index) && this.heap[this.getParentIndex(index)].priority < this.heap[index].priority ){
-            this.swap(index, this.getParentIndex(index))
-            index = this.getParentIndex(index)
-        }
-    }
-
-    heapifyDown(index){
-        let largest = index 
-        let leftChildIndex = this.getLeftChildIndex(index)
-        let rightChildIndex = this.getRightChildIndex(index)
-
-        if(leftChildIndex< this.heap.length && this.heap[leftChildIndex].priority > this.heap[index].priority){
-            largest = leftChildIndex 
-        }
-        if(rightChildIndex < this.heap.length && this.heap[rightChildIndex].priority > this.heap[index].priority){
-            largest = rightChildIndex 
-        }
-
-        if(largest !== index){
-            this.swap(largest, index)
-            this.heapifyDown(largest)
-        }
-    }
-    enqueue(value, priority){
-        this.heap.push({value, priority})
-        this.heapifyUp(this.heap.length -1 )
-    }
-
-    dequeue(){
-
-        let dequedElem = this.heap[0]
-        this.heap[0] = this.heap.pop()
-        this.heapifyDown(0)
-        return dequedElem.value 
-    }
-
+  print() {
+    console.log(this.heap);
+  }
 }
-
-const pq = new PriorityQueue()
-pq.enqueue("value 1", 3)
-pq.enqueue("Value 2", 6)
-pq.enqueue("value, 3", 1)
-pq.dequeue()
-pq.dequeue()
-
-console.log(pq)
+let q = new PriorityQueue();
+q.queue(43, 5);
+q.queue(54, 3);
+q.dequeue();
+q.print();

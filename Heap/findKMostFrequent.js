@@ -1,91 +1,76 @@
-
+// find most k frequent elments in an array using heap
 class MinHeap {
-    constructor() {
-        this.heap = []
+  constructor() {
+    this.heap = [];
+  }
+
+  insert(value) {
+    this.heap.push(value);
+    this.heapifyUp(this.heap.length - 1);
+  }
+
+  removeMin() {
+    if (this.heap.length == 0) return null;
+    if (this.heap.length == 1) return this.heap.pop();
+    let min = this.heap[0];
+    this.heap[0] = this.heap.pop();
+    this.heapifyDown(0);
+    return min;
+  }
+
+  swap(a, b) {
+    [this.heap[a], this.heap[b]] = [this.heap[b], this.heap[a]];
+  }
+
+  heapifyUp(index) {
+    let parentIndex = Math.floor((index - 1) / 2);
+    if (parentIndex >= 0 && this.heap[index][1] < this.heap[parentIndex][1]) {
+      this.swap(index, parentIndex);
+      this.heapifyUp(parentIndex);
     }
-    getParentIndex(index) {
-        return Math.floor((index - 1) / 2)
-    }
-    getLeftChildIndex(index) {
-        return index * 2 + 1
-    }
-    getRightChildIndex(index) {
-        return index * 2 + 2
-    }
-    hasParent(index) {
-        return this.getParentIndex(index) >= 0
-    }
-    swap(i, j) {
-        [this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]]
+  }
+
+  heapifyDown(index) {
+    let smallest = index;
+    let left = 2 * index + 1;
+    let right = 2 * index + 2;
+
+    if (
+      left < this.heap.length &&
+      this.heap[left][1] < this.heap[smallest][1]
+    ) {
+      smallest = left;
     }
 
-    heapifyUp(index) {
-        let parentIndex = this.getParentIndex(index)
-        while (this.hasParent(index) && this.heap[index][1] < this.heap[parentIndex][1]) {
-            this.swap(index, parentIndex)
-            index = parentIndex
-        }
+    if (
+      right < this.heap.length &&
+      this.heap[right][1] < this.heap[smallest][1]
+    ) {
+      smallest = right;
     }
 
-    heapifyDown(index) {
-        let smallest = index
-        let leftChildIndex = this.getLeftChildIndex(index)
-        let rightChildIndex = this.getRightChildIndex(index)
-
-        if (leftChildIndex< this.heap.length &&  this.heap[smallest][1] > this.heap[leftChildIndex][1]) {
-            smallest = leftChildIndex
-        }
-        if (rightChildIndex < this.heap.length &&  this.heap[smallest][1] > this.heap[rightChildIndex][1]) {
-            smallest = rightChildIndex
-        }
-
-        if (index !== smallest) {
-            this.swap(index, smallest)
-            this.heapifyDown(smallest)
-        }
+    if (index !== smallest) {
+      this.swap(index, smallest);
+      this.heapifyDown(smallest);
     }
-
-    insert(value) {
-        this.heap.push(value)
-        this.heapifyUp(this.heap.length - 1)
-    }
-
-    removeSmallest() {
-
-        if (this.heap.length == 0) return
-        if (this.heap.length == 1) return this.heap.pop()
-
-        let smallest = this.heap[0]
-        this.heap[0] = this.heap.pop()
-        this.heapifyDown(0)
-        return smallest
-    }
-    print(){
-        console.log(this.heap)
-    }
+  }
 }
 
+function kMostFrequent(arr, k) {
+  let freqMap = new Map();
 
-function topKFrequent(nums, k) {
-    let freqMap = new Map();
-
-    // Step 1: Count Frequency
-    for (let num of nums) {
-        freqMap.set(num, (freqMap.get(num) || 0) + 1);
+  for (let num of arr) {
+    freqMap.set(num, (freqMap.get(num) ?? 0) + 1);
+  }
+  let hp = new MinHeap();
+  for (let [num, freq] of freqMap.entries()) {
+    hp.insert([num, freq]);
+    if (hp.heap.length > k) {
+      hp.removeMin();
     }
+  }
 
-    // Step 2: Use MinHeap to store top K elements
-    let minHeap = new MinHeap();
-    for (let [num, freq] of freqMap.entries()) {
-        minHeap.insert([num, freq]);
-        if (minHeap.heap.length > k) {
-            minHeap.removeSmallest(); // Remove the least frequent element
-        }
-    }
-
-    // Step 3: Extract elements from heap
-    return minHeap.heap.map(entry => entry[0]);
+  return hp.heap.map((elem) => elem[0]);
 }
-console.log(topKFrequent([4,6,2,6,7,2,7,2,7,4,6,2,2,4,5,6,4,3,7,3,6,3],3))
 
-
+console.log(kMostFrequent([1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5], 2));
